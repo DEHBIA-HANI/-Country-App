@@ -1,8 +1,36 @@
-fetch("https://restcountries.com/v3.1/all")
-  .then((res) => res.json())
-  .then((data) => console.log(data));
+const countriesContenaire = document.querySelector(".countries-container");
+let countriesData = [];
+// const input = document.getElementById("inputSearch");
 
-// 2 - Créer une fonction pour "fetcher" les données, afficher les données dans la console.
+async function fetchCountries() {
+  await fetch("https://restcountries.com/v3.1/all")
+    .then((res) => res.json())
+    .then((data) => (countriesData = data));
+  console.log(countriesData);
+  countriesDisplay();
+}
+
+function countriesDisplay() {
+  countriesContenaire.innerHTML = countriesData
+    .map(
+      (country) =>
+        `
+    <div class="card">
+     <img src="${country.flags.svg}" alt="drapeau ${
+          country.translations.fra.common
+        } ">
+    <h3>${country.translations.fra.common}</h3>
+    <h4>${country.capital}</h4>
+    <p>${country.population.toLocaleString()}</p>
+
+    </div>
+      
+    `
+    )
+    .join("");
+}
+window.addEventListener("load", fetchCountries());
+// // 2 - Créer une fonction pour "fetcher" les données, afficher les données dans la console.
 
 // 3 - Passer les données à une variable
 
